@@ -11,5 +11,8 @@ module LL
     end
     
   end
-
+  
+  def to_s
+    @regex.to_s
+  end
 end

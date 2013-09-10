@@ -16,7 +16,8 @@ class TestRegexToken < Test::Unit::TestCase
 
   def test_complex_regex
     assert(LL::RegexToken.new(/.*\:/) == 'teste:')
-    assert(LL::RegexToken.new(/[0..9]\:/) == '9:')
+    assert(LL::RegexToken.new(/[0-9]\:/) == '9:')
+    assert(LL::RegexToken.new(/[0-9]\:/) == '1:')
   end
 
   def test_parser_with_regex
@@ -26,12 +27,15 @@ class TestRegexToken < Test::Unit::TestCase
     rule1 = LL::Rule.new(:S, [:F])
     rule2 = LL::Rule.new(:S, ['(', :S, '+', :F, ')'])
       
-    rule3 = LL::Rule.new(:F, [LL::RegexToken.new(/[0..9]/)]) { counter += 1 }
+    rule3 = LL::Rule.new(:F, [LL::RegexToken.new(/[0-9]/)]) do |s, t|
+      $LOGGER.debug("CALLING RULE HANDLER #{s}, #{t}")    
+      counter += 1 
+    end
 
     p = LL::Parser.new([rule1, rule2, rule3], false)
 
-    p.parse('( 9 + 7 )') do |r, s, t |
-      $LOGGER.debug("Expected #{s} found #{t}")    
+    p.parse('( 1 + 7 )') do |r, s, t |
+      $LOGGER.debug("Expected #{s} found #{t} within Rule #{r.inspect}")    
     end
 
     assert(counter == 2)
