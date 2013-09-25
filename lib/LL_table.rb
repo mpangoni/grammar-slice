@@ -8,19 +8,19 @@ module LL
       rules.each do |r|
 
         non_terminal = r.non_terminal
-        first_symbol = r.stack[0]
+        first_symbol = r.first_symbol
 
         #if first symbol refers to a inner rule
         #try get his firts symbol to build parse table
         if first_symbol.kind_of?(Symbol) then
 
-          $LOGGER.debug("First Symbol " + first_symbol.to_s + " reffers to a rule")
+          $LOGGER.debug("First Symbol " + first_symbol.to_s + " refers to a rule")
 
           inner_rules = find_firts_symbol(first_symbol, rules)
 
           $LOGGER.debug("Found a rule " + inner_rules[0].inspect)
 
-          first_symbol = inner_rules[0].stack[0]
+          first_symbol = inner_rules[0].first_symbol
 
         end
         
@@ -45,7 +45,7 @@ module LL
     end
 
     def find_firts_symbol(s, rules)
-      rules.select { |r| r.non_terminal == s and !(r.stack[0].kind_of?(Symbol)) }
+      rules.select { |r| r.non_terminal == s and !(r.first_symbol.kind_of?(Symbol)) }
     end
 
   end

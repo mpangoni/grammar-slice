@@ -27,8 +27,8 @@ class TestRegexToken < Test::Unit::TestCase
     rule1 = LL::Rule.new(:S, [:F])
     rule2 = LL::Rule.new(:S, ['(', :S, '+', :F, ')'])
       
-    rule3 = LL::Rule.new(:F, [LL::RegexToken.new(/[0-9]/)]) do |s, t|
-      $LOGGER.debug("CALLING RULE HANDLER #{s}, #{t}")    
+    rule3 = LL::Rule.new(:F, [LL::RegexToken.new(/[0-9]/)]) do |t|
+      $LOGGER.debug("CALLING RULE HANDLER FOR TOKEN #{t}")    
       counter += 1 
     end
 

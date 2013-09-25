@@ -24,8 +24,10 @@ module LL
 
       while(stack.size() > 0)
 
+        current_symbol = stack.last()
+        
         # Is token equal to current stack's item ?
-        if  stack.last() == tokens[p]  then
+        if  current_symbol == tokens[p]  then
 
           # call a 'global' parse handler
           if handler then
@@ -33,7 +35,7 @@ module LL
           end
 
           # try to call rule handler
-          rule.fire_handler( stack.last(), tokens[p])
+          current_symbol.fire(tokens[p]) if current_symbol.respond_to? :fire
 
           p = p + 1
           stack.pop()
@@ -42,9 +44,9 @@ module LL
           # rule in table and push each token to stack
         else
 
-          $LOGGER.debug("Finding rule for #{stack.last().to_s}  and token #{tokens[p]}")
+          $LOGGER.debug("Finding rule for #{current_symbol.to_s}  and token #{tokens[p]}")
 
-          rule  = @table.find_rule( stack.last(), tokens[p] )
+          rule  = @table.find_rule( current_symbol, tokens[p] )
 
           # throw some error if cant find a rule and parser is not resilient
           raise "Unexpected token " + tokens[p] if !rule and !@resilient
@@ -56,7 +58,7 @@ module LL
           
           $LOGGER.debug("Current rule #{rule.inspect}")
           
-          rule.stack.reverse.each {|v| stack.push(v) }
+          rule.push(stack)
 
         end
 
