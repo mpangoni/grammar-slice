@@ -8,14 +8,13 @@ module LL
     def initialize(rules, resilient=true)
 
       @table = LL::Table.new(rules)
-      @start_rule = rules[0]
       @resilient = resilient
 
     end
 
     def parse( stream, &handler )
 
-      rule = @start_rule
+      rule = @table.
 
       stack = start_parse_stack(@start_rule)
       tokens = stream.split()

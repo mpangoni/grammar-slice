@@ -36,9 +36,18 @@ module LL
 
     end
 
+    def find_first_rule(t) 
+    
+      return nil
+    end
+    
     def find_rule(s, t)
       @tree[s].each do |first_symbol, rule|
-        return rule if first_symbol == t
+        
+        if first_symbol == t then
+          $LOGGER.debug("Retuning rule #{rule} for symbol #{s} and token #{t}")
+          return rule 
+        end
       end
       
       return nil

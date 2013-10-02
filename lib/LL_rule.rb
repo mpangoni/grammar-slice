@@ -23,7 +23,7 @@ module LL
           
           def v.fire(token)
             $LOGGER.debug("Executing #{@handler} to symbol #{self} with token #{token}")
-            @handler.call(token)
+            @handler.call(self, token)
           end
         end
         
